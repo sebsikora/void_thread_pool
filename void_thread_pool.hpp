@@ -26,12 +26,12 @@ class VoidThreadPool {
 		bool m_display_messages = false;
 		std::vector<std::thread> m_threads = {};
 		bool m_pool_stopped = false;
-		
+		// Synchronisation of job queue and stop flag.
 		std::condition_variable m_condition;
 		std::mutex m_pool_lock;
 		std::queue<std::function<void()>> m_job_queue = {};
 		bool m_stop_pool = false;
-		
+		// Synchronisation of pending job counter and waiting flag.
 		std::condition_variable m_job_counter_condition;
 		std::mutex m_job_counter_lock;
 		int m_jobs_pending = 0;
@@ -53,6 +53,7 @@ VoidThreadPool::VoidThreadPool(bool display_messages) {
 		std::cout << "Void ThreadPool starting " << num_threads << " worker threads..." << std::endl;
 	}
 	for (int i = 0; i < num_threads; i ++) {
+		// Pass worker member function by reference to avoid the thread making it's own copy.
 		m_threads.push_back(std::thread(&VoidThreadPool::WorkerFunction, this, i));
 	}
 }
@@ -143,11 +144,13 @@ void VoidThreadPool::StopPool(void) {
 		std::string shutdown_message = "StopPool() called...\n"; 
 		std::cout << shutdown_message;
 	}
+	// Set the stop flag and notify all processes.
 	{
 		std::unique_lock<std::mutex> lock(m_pool_lock);
 		m_stop_pool = true;
 	}
 	m_condition.notify_all();
+	// Wait and join all threads.
 	for (std::thread& thread : m_threads) {
 		thread.join();
 	}
