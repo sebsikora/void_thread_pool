@@ -1,4 +1,4 @@
-# void_thread_pool.hpp
+# void_thread_pool.cpp
 
 © 2021 Dr Sebastien Sikora.
 
@@ -8,7 +8,7 @@ Updated 05/11/2021.
 
 What is it?
 -------------------------
-void_thread_pool.hpp is an ultra-simple header-only thread pool implementation for running functions that return `void` in multiple worker threads.
+void_thread_pool.hpp is an ultra-simple thread pool implementation for running functions that return `void` in multiple worker threads.
 
 It is a synthesis of the brilliantly helpful code snippets and examples by users [phd-ap-ece](https://stackoverflow.com/users/3818417/phd-ap-ece) and [pio](https://stackoverflow.com/users/2724420/pio) [here](https://stackoverflow.com/questions/15752659/thread-pooling-in-c11).
 
