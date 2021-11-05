@@ -13,7 +13,7 @@ void_thread_pool.hpp is an ultra-simple header-only thread pool implementation f
 It is a synthesis of the brilliantly helpful code snippets and examples by users [phd-ap-ece](https://stackoverflow.com/users/3818417/phd-ap-ece) and [pio](https://stackoverflow.com/users/2724420/pio) [here](https://stackoverflow.com/questions/15752659/thread-pooling-in-c11).
 
 Useful supplementary information found [here](https://stackoverflow.com/questions/10673585/start-thread-with-member-function).
-Explanation of the syntax `[this]() { ... }` for the predicate second argument to `condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o).
+Explanation of the syntax `[this]() { ... }` for the predicate second argument to `std::condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o).
 
 License:
 -------------------------
