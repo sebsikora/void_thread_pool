@@ -19,5 +19,3 @@ License:
 <br/><br/>
 void_thread_pool.hpp is distributed under the terms of the MIT license.
 Learn about the MIT license [here](https://choosealicense.com/licenses/mit/)
-
-~
