@@ -9,9 +9,9 @@ Updated 05/11/2021.
 What is it?
 -------------------------
 void_thread_pool is an ultra-simple header-only thread pool implementation for running void() functions in multiple worker threads.
-It is a synthesis of the brilliantly helpful code snippets and examples by users 'phd-ap-ece' and 'pio' [here](https://stackoverflow.com/questions/15752659/thread-pooling-in-c11)
-Useful supplementary information found [here](https://stackoverflow.com/questions/10673585/start-thread-with-member-function)
-Explanation of the syntax `[this]() { ... }` for the predicate second argument to `condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o)
+It is a synthesis of the brilliantly helpful code snippets and examples by users 'phd-ap-ece' and 'pio' [here](https://stackoverflow.com/questions/15752659/thread-pooling-in-c11).
+Useful supplementary information found [here](https://stackoverflow.com/questions/10673585/start-thread-with-member-function).
+Explanation of the syntax `[this]() { ... }` for the predicate second argument to `condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o).
 
 License:
 -------------------------
