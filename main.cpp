@@ -31,8 +31,9 @@ int main() {
 	VoidThreadPool thread_pool(true);
 	
 	// Create a vector of Foos. Foos have a member function that returns void that we want to call.
+	int foo_count = 10;
 	std::vector<Foo*> foos = {};
-	for (int i = 0; i < 4; i ++) {
+	for (int i = 0; i < foo_count; i ++) {
 		foos.push_back(new Foo(i));
 	}
 	
@@ -41,7 +42,7 @@ int main() {
 	// wrap it (and a reference to the specific class instance) in a call to std::bind.
 	// Both arguments to std::bind need to be by reference if we don't want the thread to make a copy of the object,
 	// but it is then up to us to make sure the object stays in scope until the thread has finished executing.
-	for (int i = 0; i < 4; i ++) {
+	for (int i = 0; i < foo_count; i ++) {
 		thread_pool.AddJob(std::bind(&Foo::Bar, foos[i]));
 	}
 	
@@ -52,7 +53,7 @@ int main() {
 	thread_pool.Finish();
 	
 	// Clean up.
-	for (int i = 0; i < 4; i ++) {
+	for (int i = 0; i < foo_count; i ++) {
 		delete foos[i];
 	}
 	
