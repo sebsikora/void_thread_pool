@@ -80,6 +80,8 @@ To stop the thread pool, we call it's `Finish()` method, which will stop the wor
 
 For a complete usage example see `main.cpp`.
 
+To compile the example (for example, using gcc), enter `g++ -o main -g void_thread_pool.cpp main.cpp`
+
 License:
 -------------------------
 ![Mit License Logo](./220px-MIT_logo.png)
