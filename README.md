@@ -51,7 +51,9 @@ VoidThreadPool thread_pool(true, 8)
 Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's AddJob() member function.
 ```
 thread_pool.AddJob(FooBar1);
-thread_pool.AddJob(&FooBar1);		// We can pass the function by reference to avoid making a copy.
+thread_pool.AddJob(&FooBar1);
+
+// We can pass the function by reference to avoid making a copy.
 
 thread_pool.AddJob(std::bind(&FooBar2, i));
 
@@ -59,11 +61,16 @@ thread_pool.AddJob(std::bind(&FooBar2, i));
 
 Foo a_foo;
 
-thread_pool.AddJob(std::bind(&Foo::Bar, a_foo));		// If we want to pass a class member function, we again use std::bind to encapsulate a
-														// pointer to a member function of the class, followed by an instance of that type.
-// thread_pool.AddJob(std::bind(&Foo::Bar, &a_foo));	// We can pass the class instance by reference, otherwise std::bind will make a copy of the
-														// object. However, we are then taking responsibility for making sure the referenced
-														// object still exists for the duration of the thread's execution.
+thread_pool.AddJob(std::bind(&Foo::Bar, a_foo));
+
+// If we want to pass a class member function, we again use std::bind to encapsulate a
+// pointer to a member function of the class, followed by an instance of that type.
+
+thread_pool.AddJob(std::bind(&Foo::Bar, &a_foo));
+
+// We can pass the class instance by reference, otherwise std::bind will make a copy of the
+// object. However, we are then taking responsibility for making sure the referenced object
+// still exists for the duration of the thread's execution.
 ```
 
 License:
