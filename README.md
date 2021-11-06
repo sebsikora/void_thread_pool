@@ -14,7 +14,7 @@ It is a synthesis of the brilliantly helpful code snippets and examples by users
 Useful supplementary information found [here](https://stackoverflow.com/questions/10673585/start-thread-with-member-function).
 Explanation of the syntax `[this]() { ... }` for the predicate second argument to `std::condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o).
 
-How do we use it?
+How to use it?
 -------------------------
 Say we have a function, or a class with a member function that returns `void`, that we would like to call in it's own thread.
 ```
@@ -51,8 +51,11 @@ VoidThreadPool thread_pool(true, 8)
 Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's AddJob() member function.
 ```
 thread_pool.AddJob(FooBar1);
-thread_pool.AddJob(&FooBar1);						// We can pass the function by reference to avoid making a copy.
-thread_pool.AddJob(std::bind(&FooBar2, i));			// If we need to pass arguments with the function we encapsulate both using std::bind.
+thread_pool.AddJob(&FooBar1);		// We can pass the function by reference to avoid making a copy.
+
+thread_pool.AddJob(std::bind(&FooBar2, i));
+
+// If we need to pass arguments with the function we encapsulate both using std::bind.
 
 Foo a_foo;
 
