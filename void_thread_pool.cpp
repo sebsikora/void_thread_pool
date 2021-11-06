@@ -1,6 +1,6 @@
 /*
 	
-	void_thread_pool.cpp
+	void_thread_pool.cpp - An ultra-simple thread pool implementation for running void() functions in multiple worker threads.
 	
 	Copyright © 2021 Dr Seb N.F. Sikora.
 	
@@ -63,7 +63,6 @@ void VoidThreadPool::WorkerFunction(int worker_id) {
 		std::string message = "Worker function " + std::to_string(worker_id) + " starting.\n";
 		std::cout << message;
 	}
-	
 	std::function<void()> job;
 	while (true) {
 		{
@@ -84,7 +83,6 @@ void VoidThreadPool::WorkerFunction(int worker_id) {
 			m_job_queue.pop();
 		}
 		job();
-
 		{
 			// Once the current job has finished, decrement the pending job counter.
 			// If there are no pending jobs and we are waiting, alert the waiting function via condition variable.
@@ -112,19 +110,27 @@ void VoidThreadPool::AddJob(std::function<void()> new_job) {
 }
 
 void VoidThreadPool::WaitForAllJobs(void) {
-	if (m_display_messages) {
-		std::string message = "*** Waiting for all jobs to complete...\n";
-		std::cout << message;
-	}
 	while (true) {		// Wrap the wait on m_job_counter_condition in a while loop in case the condition wakes up spuriously.
 		{
 			std::unique_lock<std::mutex> lock(m_job_counter_lock);
-			m_waiting_for_completion = true;
-			m_job_counter_condition.wait(lock, [this]() { return m_jobs_pending == 0; });
-			if (m_jobs_pending == 0) {
-				m_waiting_for_completion = false;
+			if (m_jobs_pending > 0) {
 				if (m_display_messages) {
-					std::cout << "...all jobs completed. ***" << std::endl;
+					std::string message = "*** Waiting for all jobs to complete...\n";
+					std::cout << message;
+				}
+				m_waiting_for_completion = true;
+				m_job_counter_condition.wait(lock, [this]() { return m_jobs_pending == 0; });
+				if (m_jobs_pending == 0) {
+					m_waiting_for_completion = false;
+					if (m_display_messages) {
+						std::cout << "...all jobs completed. ***" << std::endl;
+					}
+					break;
+				}
+			} else {
+				if (m_display_messages) {
+					std::string message = "No uncompleted jobs.\n";
+					std::cout << message;
 				}
 				break;
 			}
