@@ -17,7 +17,7 @@ Explanation of the syntax `[this]() { ... }` for the predicate second argument t
 How to use it?
 -------------------------
 Say we have a function, or a class with a member function that returns `void`, that we would like to call in it's own thread.
-```
+```cpp
 void FooBar1() {
 	std::string message = "FooBar1 call.\n";
 	std::cout << message;
@@ -38,7 +38,7 @@ class Foo {
 };
 ```
 First we instantiate the thread pool.
-```
+```cpp
 VoidThreadPool thread_pool(true);
 
 // Optional first argument set to true prints pool messages to the console.
@@ -49,7 +49,7 @@ VoidThreadPool thread_pool(true, 8)
 // thread count returned by std::thread::hardware_concurrency().
 ```
 Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's `AddJob()` member function.
-```
+```cpp
 thread_pool.AddJob(FooBar1);
 thread_pool.AddJob(&FooBar1);
 
