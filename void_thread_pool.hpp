@@ -49,7 +49,7 @@ class VoidThreadPool {
 		std::condition_variable m_condition;
 		std::mutex m_pool_lock;
 		std::queue<std::function<void()>> m_job_queue = {};
-		bool m_stop_pool = false;
+		bool m_finish = false;
 		// Synchronisation of pending job counter and waiting flag.
 		std::condition_variable m_job_counter_condition;
 		std::mutex m_job_counter_lock;
@@ -62,7 +62,7 @@ class VoidThreadPool {
 		void WorkerFunction(int worker_id);
 		void AddJob(std::function<void()> new_job);
 		void WaitForAllJobs(void);
-		void StopPool(void);
+		void Finish(void);
 };
 
 #endif

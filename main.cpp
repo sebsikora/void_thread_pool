@@ -49,7 +49,7 @@ int main() {
 	thread_pool.WaitForAllJobs();
 	
 	// Call this to stop all threads. 
-	thread_pool.StopPool();
+	thread_pool.Finish();
 	
 	// Clean up.
 	for (int i = 0; i < 4; i ++) {

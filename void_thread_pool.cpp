@@ -53,7 +53,7 @@ VoidThreadPool::VoidThreadPool(bool display_messages) {
 
 VoidThreadPool::~VoidThreadPool() {
 	if (!m_pool_stopped) {
-		StopPool();
+		Finish();
 	}
 }
 
@@ -69,18 +69,18 @@ void VoidThreadPool::WorkerFunction(int worker_id) {
 			std::unique_lock<std::mutex> lock(m_pool_lock);
 			// See below for explanation of the syntax [this]() { ... } for the predicate second argument to condition_variable.wait().
 			// https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o
-			m_condition.wait(lock, [this]() { return !m_job_queue.empty() || m_stop_pool; });
+			m_condition.wait(lock, [this]() { return !m_job_queue.empty() || m_finish; });
 			
-			if (m_stop_pool && m_job_queue.empty()) {
+			if (m_finish && m_job_queue.empty()) {
 				if (m_display_messages) {
 					std::string message = "Worker function " + std::to_string(worker_id) + " stoppped.\n";
 					std::cout << message;
 				}
 				return;
+			} else {
+				job = m_job_queue.front();
+				m_job_queue.pop();
 			}
-			
-			job = m_job_queue.front();
-			m_job_queue.pop();
 		}
 		job();
 		{
@@ -138,15 +138,15 @@ void VoidThreadPool::WaitForAllJobs(void) {
 	}
 }
 
-void VoidThreadPool::StopPool(void) {
+void VoidThreadPool::Finish(void) {
 	if (m_display_messages) {
-		std::string shutdown_message = "StopPool() called...\n"; 
+		std::string shutdown_message = "Finish() called...\n"; 
 		std::cout << shutdown_message;
 	}
 	// Set the stop flag and notify all processes.
 	{
 		std::unique_lock<std::mutex> lock(m_pool_lock);
-		m_stop_pool = true;
+		m_finish = true;
 	}
 	m_condition.notify_all();
 	// Wait and join all threads.
