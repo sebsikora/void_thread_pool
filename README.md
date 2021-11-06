@@ -14,6 +14,50 @@ It is a synthesis of the brilliantly helpful code snippets and examples by users
 Useful supplementary information found [here](https://stackoverflow.com/questions/10673585/start-thread-with-member-function).
 Explanation of the syntax `[this]() { ... }` for the predicate second argument to `std::condition_variable.wait()` found [here](https://stackoverflow.com/questions/39565218/c-condition-variable-wait-for-predicate-in-my-class-stdthread-unresolved-o).
 
+How do we use it?
+-------------------------
+Say we have a function, or a class with a member function that returns `void`, that we would like to call in it's own thread.
+```
+void FooBar1() {
+	std::string message = "FooBar1 call.\n";
+	std::cout << message;
+}
+
+void FooBar2(int id) {
+	std::string message = "My id is " + std::to_string(id) + "\n";
+	std::cout << message;
+}
+
+class Foo {
+	private:
+		int m_id = 0;
+	public:
+		Foo(int id) { m_id = id; }
+		~Foo() { }
+		void Bar(void) { *** Stuff happens *** }
+};
+```
+First we instantiate the thread pool.
+```
+VoidThreadPool thread_pool(true);					// Optional first argument set to true prints pool messages to the console.
+// VoidThreadPool thread_pool(true, 8)				// If we don't specify the optional second number_of_workers argument it defaults to
+													// the thread count returned by std::thread::hardware_concurrency().
+```
+Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's AddJob() member function.
+```
+thread_pool.AddJob(FooBar1);
+thread_pool.AddJob(&FooBar1);						// We can pass the function by reference to avoid making a copy.
+thread_pool.AddJob(std::bind(&FooBar2, i));			// If we need to pass arguments with the function we encapsulate both using std::bind.
+
+Foo a_foo;
+
+thread_pool.AddJob(std::bind(&Foo::Bar, a_foo));		// If we want to pass a class member function, we again use std::bind to encapsulate a
+														// pointer to a member function of the class, followed by an instance of that type.
+// thread_pool.AddJob(std::bind(&Foo::Bar, &a_foo));	// We can pass the class instance by reference, otherwise std::bind will make a copy of the
+														// object. However, we are then taking responsibility for making sure the referenced
+														// object still exists for the duration of the thread's execution.
+```
+
 License:
 -------------------------
 ![Mit License Logo](./220px-MIT_logo.png)

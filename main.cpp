@@ -25,6 +25,26 @@ class Foo {
 		}
 };
 
+void FooBar1(void);
+void FooBar1(void) {
+	std::string message = "FooBar1 checking-in.\n";
+	std::cout << message;
+	int bar_delay_seconds = (rand() % 5) + 2;
+	std::this_thread::sleep_for(std::chrono::seconds(bar_delay_seconds));
+	message = "FooBar1 checking-out.\n";
+	std::cout << message;
+}
+
+void FooBar2(int id = 0);
+void FooBar2(int id) {
+	std::string message = "FooBar2 number " + std::to_string(id) + " checking-in.\n";
+	std::cout << message;
+	int bar_delay_seconds = (rand() % 5) + 2;
+	std::this_thread::sleep_for(std::chrono::seconds(bar_delay_seconds));
+	message = "FooBar2 number " + std::to_string(id) + " checking-out.\n";
+	std::cout << message;
+}
+
 int main() {
 	
 	// Create a threadpool with a number of threads equal to the maximum supported on the run time architecture.
@@ -35,6 +55,14 @@ int main() {
 	std::vector<Foo*> foos = {};
 	for (int i = 0; i < foo_count; i ++) {
 		foos.push_back(new Foo(i));
+	}
+
+	// Example of adding a void function.
+	// Without arguments.
+	thread_pool.AddJob(&FooBar1);
+	// If we want to pass arguments with the function we pass them together using std::bind.
+	for (int i = 1; i < 5; i ++) {
+		thread_pool.AddJob(std::bind(&FooBar2, i));
 	}
 	
 	// We add the void member function calls to our thread pool's job queue.
