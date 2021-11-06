@@ -64,7 +64,7 @@ Foo a_foo;
 thread_pool.AddJob(std::bind(&Foo::Bar, a_foo));
 
 // If we want to pass a class member function, we again use std::bind to encapsulate a
-// pointer to a member function of the class, followed by an instance of that type.
+// pointer to a member function of the class, followed by an instance of that class.
 
 thread_pool.AddJob(std::bind(&Foo::Bar, &a_foo));
 
