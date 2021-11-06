@@ -48,7 +48,7 @@ VoidThreadPool thread_pool(true, 8)
 // If we don't specify the optional second number_of_workers argument it defaults to the
 // thread count returned by std::thread::hardware_concurrency().
 ```
-Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's AddJob() member function.
+Now, to queue a job for solution, we add it to the thread pool job queue using the thread pool's `AddJob()` member function.
 ```
 thread_pool.AddJob(FooBar1);
 thread_pool.AddJob(&FooBar1);
